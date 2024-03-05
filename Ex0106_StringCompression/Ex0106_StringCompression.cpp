@@ -43,7 +43,7 @@ int main()
 
 	// char arr[] = "ababcdfdceeefda";
 	// char arr[] = "a";
-	char arr[] = "ababcdfdceeedag";
+	char arr[] = "ababcdfdceeedagkkkkkkkkkkkkk";
 	int n = sizeof(arr) - 1; // 마지막 안보이는 '\0' 제외
 
 	// 글자가 하나이상이라고 가정
@@ -59,15 +59,18 @@ int main()
 	// 표를 사용할 수도 있고 사용하지 않을 수도 있음
 	int table[26] = { 0 }; // 모든 값을 0으로 초기화
 
+	int arr_i;
+	arr_i = 0;
+	while (arr_i < n)
+	{
+		table[arr[arr_i] - 97]++;
+		arr_i++;
+	}
+
 	for (int i = 0; i < 26; i++)
 	{
-		// 힌트: char(i + 97)
-
-		// 표를 만들고 나중에 몰아서 출력하는 방법
-		// table[i] = ...
-
-		// 표를 만들지 않고 직접 출력하는 방법
-		// ...
+		if (table[i])
+			cout<< char(97 + i)<< table[i]; 
 	}
 
 	cout << endl;
@@ -87,24 +90,23 @@ int main()
 
 	cout << arr << endl;
 
-	char c = arr[0];
-	int count = 1;
+	int cnt_2;
+	int i;
+	int tmp;
 
-	cout << c;
-
-	for (int i = 1; i < n; i++)
+	i = 0;
+	while (i < n)
 	{
-		if (arr[i] == c)
+		tmp = arr[i++];
+		cnt_2 = 0;
+		while (tmp == arr[i])
 		{
-			// TODO: ...
+			cnt_2++;
+			i++;
 		}
-		else
-		{
-			// TODO: ...
-		}
+		if (cnt_2)
+			cout << char(tmp) << cnt_2;
+		i++;
 	}
-
-	cout << count << endl; // 마지막 count 출력
-
 	return 0;
 }

@@ -59,27 +59,55 @@ int main()
 // 배열 arr에 x가 몇 번 나오는지 반환
 int Count(int* arr, int n, int x)
 {
-	// TODO:
+	int cnt;
+	int i;
 
-	return 0;
+	cnt = 0;
+	i = 0;
+	while (i < n)
+	{
+		if (arr[i] == x)
+			cnt++;
+		i++;
+	}
+	return cnt;
 }
 
 // 배열 arr에 x가 있으면 index 반환, 없으면 -1 반환
 int SequentialSearch(int* arr, int n, int x)
 {
-	// TODO:
+	int i;
 
+	i = 0;
+	while (i < n)
+	{
+		if (arr[i] == x)
+			return i;
+		i++;
+	}
 	return -1;
 }
 
 int SortedCountHelper(int* arr, int n, int x, int start) // start 사용
 {
-	// TODO: 
+	int cnt;
+	int i;
+
+	cnt = 0;
+	i = start;
+	while (i < n)
+	{
+		if (arr[i] == x)
+			cnt++;
+		i++;
+	}
+	return cnt;
 
 	return 0;
 }
 
-int SortedCount(int* arr, int n, int x)
+int SortedCount(int* arr, int n, int x) // 앞에서 사용한 함수들을 재사용해서 효율적으로 구현함
+//정렬된 배열의 성질을 이용해서 탐색을 효율적으로 한다. 
 {
 	int i = SequentialSearch(arr, n, x);
 

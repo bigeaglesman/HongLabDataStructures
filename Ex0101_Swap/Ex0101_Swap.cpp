@@ -2,28 +2,26 @@
 
 using namespace std;
 
-/*
-int MySwapValue(int i, int j)
-{
-	// TODO:
-
-	return ? ;
-}
 
 void MySwapPtr(int* i, int* j)
 {
-	// TODO:
+	int temp;
+
+	temp = *i;
+	*i = *j;
+	*j = temp;
 }
 
 void MySwapRef(int& i, int& j)
 {
-	// TODO:
+	i = i + j;
+	j = i - j;
+	i = i - j;
 }
-*/
 
 bool CheckSorted(int a, int b)
 {
-	return false;
+	return (a < b);
 }
 
 int main()
@@ -34,22 +32,16 @@ int main()
 		int b = 2;
 
 		cout << a << " " << b << endl;
-
-		// TODO:
-
+		MySwapRef(a,b);
 		cout << a << " " << b << endl;
 	}
 
 
 	// 정렬(sorting)
 	{
-		int arr[] = { 9, 3 };
-
-		cout << arr[0] << " " << arr[1] << endl;
-
-		// TODO:
-
-		cout << arr[0] << " " << arr[1] << endl;
+		int arr[] = { 1, 3 };
+		cout << boolalpha;
+		cout << arr[0] << " " << arr[1] << " " << CheckSorted(arr[0], arr[1]) << endl;
 	}
 
 	// 값과 상관 없이 항상 작은 값이 먼저 출력되게 하려면?
