@@ -16,26 +16,22 @@ void RecurPermutations(char* arr, int left, int right)
 	}
 	else
 	{
-		// 힌트
-		// - for, swap(), 재귀호출
-		// - 같은 변수끼리도 swap() 가능
-		// - right는 고정
-
-		// TODO:
+		for (int i = left; i <= right ; i++)
+		{
+			swap(arr[i], arr[left]);
+			RecurPermutations(arr, left + 1, right);
+		}
 	}
 }
 
 int main()
 {
 	/* a 한 글자의 순열 (Permutations)
-
 		a
 	*/
 
 	/* ab 두 글자의 순열 (Permutations)
 
-		a b
-		b a
 	*/
 
 	/*  abc 3 글자의 순열 (Permutations)

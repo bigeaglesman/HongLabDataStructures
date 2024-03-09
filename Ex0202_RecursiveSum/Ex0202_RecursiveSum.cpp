@@ -16,14 +16,9 @@ int Sum(int* arr, int n)
 
 int RecurSum(int* arr, int n)
 {
-	/* 힌트: 역순으로 더하기 (매개변수에 시작 인덱스를 추가하지 않아도 되기 때문)
-	  (1 + 2 + ... 8 + 9 + 10)
-	= (1 + 2 + ... 8 + 9) + 10
-	= ((1 + 2 + ... 8) + 9) + 10
-	= ...
-	*/
-
-	return 0; // <- TODO: 
+	if (n == 0)
+		return (0);
+	return (RecurSum(arr, n-1) + arr[n-1]); 
 }
 
 int main()

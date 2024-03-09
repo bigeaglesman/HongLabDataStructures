@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <cassert>
 #include <fstream>
 
@@ -124,6 +124,11 @@ int main()
 	}
 
 	return 0; // <- 실습용 임시
+
+	// 최솟값의 인덱스를 찾고 탐색이 끝난후 최솟값인덱스와 현재 탐색 인덱스의 원소를 스왑 해주는 방법도 있다.
+	// 선택정렬 -> 첫번째 원소부터 뒤쪽에 있는 원소들의 최솟값 찾아서 바꾸기 끝까지 반복
+	// 정렬의  stablity
+
 	// // 가장 작은 수의 인덱스 찾기
 	// {
 	// 	int arr[] = { 8, 3, 2, 5, 1, 1, 2, 5, 8, 9 };
@@ -137,8 +142,8 @@ int main()
 	// 	//cout << "Minimum number is " << arr[min_index] << endl;
 	// }
 
-	// // Selection Sort
-	// // 힌트: swap()
+	// Selection Sort
+	// 힌트: swap()
 	// {
 	// 	int arr[] = { 8, 3, 2, 5, 1, 1, 2, 5, 8, 9 };
 	// 	int size = sizeof(arr) / sizeof(arr[0]);
