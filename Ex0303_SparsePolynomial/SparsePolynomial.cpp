@@ -27,7 +27,6 @@ void SparsePolynomial::NewTerm(float coef, int exp)
 		if (terms_) delete[] terms_;
 		terms_ = new_term;
 	}
-
 	terms_[num_terms_].coef = coef;
 	terms_[num_terms_].exp = exp;
 
@@ -37,9 +36,15 @@ void SparsePolynomial::NewTerm(float coef, int exp)
 float SparsePolynomial::Eval(float x)
 {
 	float temp = 0.0f;
+	int i;
 
-	// TODO:
+	i = 0;
 
+	while (i < num_terms_)
+	{
+		temp += terms_[i].coef * powf(x, terms_[i].exp);
+		i++;
+	}
 	return temp;
 }
 
@@ -54,9 +59,46 @@ SparsePolynomial SparsePolynomial::Add(const SparsePolynomial& poly)
 	// - 3. 더하면서 Polynomial에 업데이트 한다. 구조가 고정되어 있어서 쉽다.
 	// - 4. Polynomial을 SparsePolynomial로 변환한다.
 
+
+	// 시간 복잡도는 O(m+n)이다
+
 	SparsePolynomial temp;
 
-	// TODO:
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (i < num_terms_ && j < poly.num_terms_) // 두개의 배열의 인덱스를 동시에 전진시킨다
+	{
+		if (terms_[i].exp < poly.terms_[j].exp)
+		{
+			temp.NewTerm(terms_[i].coef, terms_[i].exp);
+			i++;
+		}
+		else if (poly.terms_[j].exp < terms_[i].exp)
+		{
+			temp.NewTerm(poly.terms_[j].coef, poly.terms_[j].exp);
+			j++;
+		}
+		else
+		{
+			temp.NewTerm(terms_[i].coef + poly.terms_[j].coef, terms_[i].exp);
+			i++;
+			j++;
+		}
+	}
+
+	while (j < poly.num_terms_)
+	{
+		temp.NewTerm(poly.terms_[j].coef, poly.terms_[j].exp);
+		j++;
+	}
+	while (i < num_terms_)
+	{
+		temp.NewTerm(terms_[i].coef, terms_[i].exp);
+		i++;
+	}
 
 	return temp;
 }

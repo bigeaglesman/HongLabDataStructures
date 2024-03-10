@@ -8,18 +8,38 @@ using namespace std;
 
 Matrix::Matrix(int num_rows, int num_cols)
 {
-	// TODO:
+	int i = 0;
+	num_cols_ = num_cols;
+	num_rows_ = num_rows;
+	const int size = num_rows * num_cols;
+
+	values_ = new float[size];
+	while (i < size)
+	{
+		values_[i] = 0;
+		i++;
+	}
 }
 
 // 복사 생성자 (b를 복사)
 Matrix::Matrix(const Matrix& b)
 {
-	// TODO:
+	int i = 0;
+	num_cols_ = b.num_cols_;
+	num_rows_ = b.num_rows_;
+	const int size = b.num_cols_ * b.num_rows_;
+
+	values_ = new float[size];
+	while (i < size)
+	{
+		values_[i] = b.values_[i];
+		i++;
+	}
 }
 
 Matrix::~Matrix()
 {
-	// TODO:
+	delete []values_;
 }
 
 void Matrix::SetValue(int row, int col, float value)

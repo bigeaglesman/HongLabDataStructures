@@ -22,7 +22,7 @@ Polynomial::Polynomial(int max_degree) // 편의상 기본값 사용
 		coeffs_[i] = 0.0f;
 }
 
-Polynomial::Polynomial(const Polynomial& poly)
+Polynomial::Polynomial(const Polynomial& poly) // 복사생성자
 {
 	this->capacity_ = poly.capacity_;
 	coeffs_ = new float[capacity_];
@@ -40,21 +40,25 @@ int Polynomial::MaxDegree()
 	return this->capacity_ - 1;
 }
 
-void Polynomial::NewTerm(const float coef, const int exp)
+void Polynomial::NewTerm(const float coef, const int exp) // 항 추가
 {
 	assert(exp < capacity_); // exp가 너무 크면 resize 하도록 구현할 수도 있음
 
-	// TODO: 쉬워요
+	coeffs_[exp] += coef; 
 }
 
 Polynomial Polynomial::Add(const Polynomial& poly)
 {
 	assert(poly.capacity_ == this->capacity_); // 문제를 단순화하기 위한 가정
-
+	int i;
 	Polynomial temp(this->MaxDegree());
 
-	// TODO:
-
+	i = 0;
+	while (i <= capacity_)
+	{
+	temp.coeffs_[i] = poly.coeffs_[i] + this->coeffs_[i];
+	i++;
+	}
 	return temp;
 }
 
@@ -65,18 +69,42 @@ Polynomial Polynomial::Mult(const Polynomial& poly)
 	// coeff_[i]가 0.0f가 아닌 경우에 대해서만 계산 (곱하면 0이 되기 때문)
 
 	Polynomial temp(this->MaxDegree());
+	int i;
+	int j;
 
-	// TODO: 항상 인덱싱 오류 조심
+	i = 0;
+	while(i <= capacity_)
+	{
+		if (coeffs_[i])
+		{
+			j = 0;
+			while (j <= poly.capacity_)
+			{
+				if (poly.coeffs_[j] && i+j < temp.capacity_)
+					temp.coeffs_[i + j] += poly.coeffs_[j] * coeffs_[i];
+				j++;
+			}
+		}
+		i++;
+	}
 
 	return temp;
 }
 
-float Polynomial::Eval(float x)
+float Polynomial::Eval(float x) // 다항식 x에 값을 넣었을 때 결과
 {
 	float temp = 0.0f;
 
 	// TODO:
 	// 힌트 std::powf(2.0f, float(3)); // 2.0f^3.0f = 8.0f (2.0f의 3.0f 제곱)
+	int i;
+
+	i = 0;
+	while (i <= capacity_)
+	{
+		temp += coeffs_[i]*powf(x, i);
+		i++;
+	}
 
 	return temp;
 }
