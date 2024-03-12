@@ -5,7 +5,7 @@
 #include <iostream>
 
 using namespace std;
-
+// 배열은  2차원 이지만 메모리 상에는 1차원으로 존재한다
 Matrix::Matrix(int num_rows, int num_cols)
 {
 	int i = 0;
@@ -24,10 +24,10 @@ Matrix::Matrix(int num_rows, int num_cols)
 // 복사 생성자 (b를 복사)
 Matrix::Matrix(const Matrix& b)
 {
-	int i = 0;
 	num_cols_ = b.num_cols_;
 	num_rows_ = b.num_rows_;
 	const int size = b.num_cols_ * b.num_rows_;
+	int i = 0;
 
 	values_ = new float[size];
 	while (i < size)
@@ -44,19 +44,34 @@ Matrix::~Matrix()
 
 void Matrix::SetValue(int row, int col, float value)
 {
-	// values_[TODO] = value;
+	values_[(row * num_cols_) + col]= value;
 }
 
 float Matrix::GetValue(int row, int col) const // 맨 뒤의 const는 함수 안에서 멤버 변수의 값을 바꾸지 않겠다는 의미
 {
-	return 0.0f;
+	float value;
+
+	value = values_[(row * num_cols_) + col];
+	return value;
 }
 
 Matrix Matrix::Transpose()
 {
 	Matrix temp(num_cols_, num_rows_); // num_cols_, num_rows_ 순서 주의
+	int row;
+	int col;
 
-	// TODO:
+	col = 0;
+	while (col < num_cols_)
+	{
+		row = 0;
+		while (row < num_rows_)
+		{
+			temp.SetValue(col, row, GetValue(row, col)); //멤버함수 사용해서 단순하게 구현하기
+			row++;
+		}
+		col++;
+	}
 
 	return temp;
 }
@@ -68,7 +83,15 @@ Matrix Matrix::Add(const Matrix& b)
 
 	Matrix temp(num_rows_, num_cols_);
 
-	// TODO:
+	const int size = num_cols_ * num_rows_;
+	int i;
+
+	i = 0;
+	while (i < size)
+	{
+		temp.values_[i] = values_[i] + b.values_[i];
+		i++;
+	}
 
 	return temp;
 }

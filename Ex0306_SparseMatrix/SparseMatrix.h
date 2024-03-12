@@ -10,7 +10,7 @@ struct MatrixTerm
 class SparseMatrix
 {
 public:
-	SparseMatrix(int num_rows, int num_cols, int capacity);
+	SparseMatrix(int num_rows, int num_cols);
 
 	SparseMatrix(const SparseMatrix& b);
 

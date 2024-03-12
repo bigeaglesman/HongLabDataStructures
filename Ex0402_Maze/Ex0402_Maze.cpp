@@ -44,40 +44,36 @@ struct Pos
 	}
 };
 
-void RecurMaze(Pos p)
+int RecurMaze(Pos p) 
 {
 	const char mark = maze[p.row][p.col];
 
 	if (mark == 'G')
 	{
 		cout << "Found!" << endl;
-		return;
+		return 1;
 	}
 
-	// 방문했던 적이 없고 ('X'가 아니고)
-	// 벽도 아닌 경우 ('1'도 아닌 경우)
-	// if (...)
-	//{
-		// 'X' 표시
+	if (mark != 'X' && mark != '1')
+	{
+		maze[p.row][p.col] = 'X';
 
-		// 옆으로 이동
-	//}
+		if (RecurMaze({p.row + 1, p.col})) return 1;		// 1을 반환받으면 재귀적으로 함수 종료시키고 밑의 재귀함수는 실행시키지 않음
+		if (RecurMaze({p.row , p.col + 1})) return 1;
+		if (RecurMaze({p.row - 1, p.col})) return 1;
+		if (RecurMaze({p.row , p.col - 1})) return 1;
+	}
+	return (0);
 }
-
-//조기 종료가 가능한 버전
-//int RecurMaze(Pos p)
-//{
-//	// TODO:
-//}
 
 void StackMaze()
 {
 	Stack<Pos> s;
 
 	Pos start = { 1, 1 }; // i = 1, j = 1  시작 지점
-	//Pos start;
-	//start.row = 1;
-	//start.col = 1;
+	// Pos start;
+	// start.row = 1;
+	// start.col = 1;
 
 	s.Push(start); // s.Push({1, 1});
 
@@ -97,8 +93,15 @@ void StackMaze()
 			cout << "Found!" << endl;
 			break;
 		}
+		if (mark != '1' && mark != 'X')
+		{
+			maze[p.row][p.col] = 'X';
 
-		// TODO:
+			s.Push({p.row+1, p.col}); //	스택에 정확한 경로를 쌓는게 아니라 일단 4방향 모두 쌓아놓고 스택의 탑부터 검사한다 
+			s.Push({p.row, p.col+1}); //	탑을 팝해서 검사했는데 접근이 불가능하면 다음 탑을 팝한다
+			s.Push({p.row-1, p.col}); //	접근이 가능하면 다시 4방향 푸쉬한다
+			s.Push({p.row, p.col-1});
+		}
 	}
 }
 

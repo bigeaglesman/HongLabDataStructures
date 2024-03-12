@@ -5,31 +5,73 @@
 #include <iostream>
 
 using namespace std;
-
+// 2차원 배열은 사실 메모리상에 흩어져있는 구조이다
 Array2D::Array2D(int num_rows, int num_cols)
 {
-	//TODO:
+	int i;
+	int j;
+
+	num_rows_ = num_rows;
+	num_cols_ = num_cols;
+	arrays_ = new float*[num_rows_];
+	i = 0;
+	while (i < num_rows_)
+	{
+		j = 0;
+		arrays_[i] = new float[num_cols_];
+		while (j < num_cols_)
+		{
+			SetValue(i, j, 0);
+			j++;
+		}
+		i++;
+	}
 }
 
 // 복사 생성자 (b를 복사)
 Array2D::Array2D(const Array2D& b)
 {
-	//TODO:
+	int i;
+	int j;
+
+	num_rows_ = b.num_rows_;
+	num_cols_ = b.num_cols_;
+	arrays_ = new float*[num_rows_];
+	i = 0;
+	while (i < num_rows_)
+	{
+		j = 0;
+		arrays_[i] = new float[num_cols_];
+		while (j < num_cols_)
+		{
+			SetValue(i, j, b.GetValue(i, j));
+			j++;
+		}
+		i++;
+	}
 }
 
 Array2D::~Array2D()
 {
-	//TODO:
+	int i;
+
+	i = 0;
+	while (i < num_rows_)
+	{
+		delete[] arrays_[i];
+		i++;
+	}
+	delete[] arrays_;
 }
 
 void Array2D::SetValue(int row, int col, float value)
 {
-	// TODO:
+	arrays_[row][col] = value;
 }
 
 float Array2D::GetValue(int row, int col) const // 맨 뒤의 const는 함수 안에서 멤버 변수의 값을 바꾸지 않겠다는 의미
 {
-	return 0.0f; // TODO:
+	return (arrays_[row][col]);
 }
 
 Array2D Array2D::Transpose()

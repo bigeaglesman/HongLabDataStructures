@@ -12,6 +12,7 @@ int main()
 	m1.SetValue(0, 2, 3.0f);
 	m1.SetValue(1, 0, 0.0f);
 	m1.SetValue(1, 1, 4.0f);
+	m1.SetValue(1, 3, 6.0f);
 	m1.SetValue(1, 2, 5.0f);
 	m1.SetValue(2, 3, 7.0f);
 
