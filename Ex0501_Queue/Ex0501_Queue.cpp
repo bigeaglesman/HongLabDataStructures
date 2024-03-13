@@ -33,7 +33,7 @@ int main()
 	q.Dequeue();
 	q.Print();
 
-	for (char c = 'E'; c <= 'K'; c++)
+	for (char c = 'E'; c <= 'Z'; c++)
 	{
 		q.Enqueue(c);
 		q.Print();

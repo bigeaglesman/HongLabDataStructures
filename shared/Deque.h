@@ -34,7 +34,8 @@ public:
 		if (Base::IsFull())
 			Base::Resize();
 
-		// TODO:
+		queue_[front_] = item;
+		front_ = (capacity_ + front_ -1) % capacity_; //1개 뺴줄 때 음수가 될 수 있으므로 capacity를 1번 더해준다
 	}
 
 	void PushBack(const T& item)
@@ -51,9 +52,14 @@ public:
 	{
 		assert(!Base::IsEmpty());
 
-		// TODO:
+		rear_ = (capacity_ + rear_ -1) % capacity_;
 	}
 
 private:
 	// Queue와 동일
+	T *queue_ = Base::queue_;
+	int &rear_ = Base::rear_;
+	int &front_ = Base::front_;
+	int &capacity_ = Base::capacity_;
+
 };

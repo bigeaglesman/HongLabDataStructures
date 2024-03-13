@@ -4,7 +4,9 @@
 
 using namespace std;
 
+
 Stack<char> tower[3];
+int cnt = 0;
 
 void PrintTowers()
 {
@@ -20,6 +22,7 @@ void PrintTowers()
 // 실제로 디스크를 움직여서 스택들을 업데이트
 void MoveDisk(int from, int to)
 {
+	cnt++;
 	if (tower[from].IsEmpty())
 	{
 		cout << "Tower " << from << " is empty." << endl;
@@ -41,11 +44,30 @@ void MoveDisk(int from, int to)
 
 	cout << "Move disk " << disk << " from " << from << " to " << to << endl;
 	PrintTowers();
+	cout << endl;
+	cout << endl;
 }
 
 void RecurMoveDisks(int n, int from, int temp, int to)
 {
-	// TODO:
+	// if (n == 2)
+	// {
+	// 	MoveDisk(from, temp);		// 1이동
+	// 	MoveDisk(from, to);		// 2이동
+	// 	MoveDisk(temp, to);		// 1이동
+	// }
+	// if (n > 2)
+	// {
+	// 	RecurMoveDisks(n-1, from, to, temp);
+	// 	MoveDisk(from, to);
+	// 	RecurMoveDisks(n-1, temp, from, to);
+	// }
+
+	if (n == 0)
+		return;
+	RecurMoveDisks(n-1, from, to ,temp);
+	MoveDisk(from, to);
+	RecurMoveDisks(n-1, temp, from, to);
 }
 
 int main()
@@ -60,6 +82,7 @@ int main()
 	// MoveDisk(0, 2); // <- 디스크 하나만 움직이는 함수 tower 0 -> tower 2
 
 	RecurMoveDisks(num_disks, 0, 1, 2);
+	cout << "cnt: " << cnt << endl;
 
 	return 0;
 }

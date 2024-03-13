@@ -29,7 +29,7 @@ public:
 
 	bool IsFull() const
 	{
-		// 원형 큐에서 꽉 찼다의 기준
+		// 원형 큐에서 꽉 찼다의 기준 capacity는 메모리 할당량 (front 칸 + 값이 들어가는 칸) 메모리 8할당 rear_ = 7 -> front_ = 0
 		return (rear_ + 1) % capacity_ == front_;
 	}
 
@@ -37,7 +37,7 @@ public:
 	{
 		assert(!IsEmpty());
 
-		return queue_[(front_ + 1) % capacity_]; // 주의 + 1
+		return queue_[(front_ + 1) % capacity_]; // 주의 + 1 나머지 활용해서 원형 자료구조의 인덱스 쉽게 구하기
 	}
 
 	T& Rear() const
@@ -49,23 +49,12 @@ public:
 
 	int Size() const
 	{
-		// 하나하나 세는 방법 보다는 경우를 따져서 바로 계산하는 것이 빠릅니다.
-
-		// if-else-if-else로 구현하는 경우
-		//if (...)
-		//	return ...;
-		//else if (...)
-		//	return ...;
-		//else
-		//	return 0;
-
-		// 또는 if-else 하나로도 구현 가능합니다.
-		// if (...)
-		//	  return ...;
-		// else
-		//    return ...;
-
-		return 0; // TODO: 임시
+		if (front_ < rear_)
+			return (rear_ - front_);
+		else if (front_ > rear_)
+			return (capacity_ - front_ + rear_);
+		else
+			return (0);
 	}
 
 	void Resize() // 2배씩 증가
@@ -79,21 +68,45 @@ public:
 
 		// TODO: 하나하나 복사하는 방식은 쉽게 구현할 수 있습니다. 
 		//       (도전) 경우를 나눠서 memcpy()로 블럭 단위로 복사하면 더 효율적입니다.
+		const int old_capacity = capacity_;
+		const int tmp_rear_ = Size();
+		T *tmp_queue;
+
+		capacity_ *= 2;
+		tmp_queue = new T[capacity_];
+		if (front_ < rear_)
+			memcpy(&tmp_queue[1], &queue_[front_ + 1], Size()*sizeof(T));
+		else if (front_ > rear_)
+		{
+			memcpy(&tmp_queue[1], &queue_[front_ + 1], (old_capacity - 1 - front_) * sizeof(T));
+			memcpy(&tmp_queue[old_capacity - front_], &queue_[0], (rear_ + 1) * sizeof(T));
+		}
+		rear_ = tmp_rear_;
+		front_ = 0;
+		delete[] queue_;
+		queue_ = tmp_queue;
 	}
 
 	void Enqueue(const T& item) // 맨 뒤에 추가, Push()
 	{
 		if (IsFull())
 			Resize();
-
-		// TODO:
+		if (rear_ == capacity_ - 1)
+		{
+			queue_[0] = item;
+			rear_ = 0; 
+		}
+		else
+			queue_[++rear_] = item;
 	}
 
 	void Dequeue() // 큐의 첫 요소 삭제, Pop()
 	{
 		assert(!IsEmpty());
-
-		// TODO: 
+		if (front_ == capacity_ - 1)
+			front_ = 0;
+		else
+			front_++;
 	}
 
 	void Print()
