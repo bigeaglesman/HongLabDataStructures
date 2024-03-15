@@ -19,7 +19,22 @@ public:
 
 	SinglyLinkedList(const SinglyLinkedList& list)
 	{
-		// TODO: 연결 리스트 복사
+		Node *current;
+		Node *temp;
+		Node *copy_current;
+
+		copy_current = list.first_;
+		while (copy_current)
+		{
+			current = new Node;
+			if (first_ == nullptr)
+				first_ = current;
+			else
+				temp->next = current;
+			current->item = copy_current->item;
+			copy_current = copy_current->next;
+			temp = current;
+		}
 	}
 
 	~SinglyLinkedList()
@@ -29,7 +44,16 @@ public:
 
 	void Clear() // 모두 지워야(delete) 합니다.
 	{
-		// TODO: 모두 삭제
+		Node *current;
+		Node *temp;
+
+		current = first_;
+		while (current)
+		{
+			temp = current;
+			current = current -> next;
+			delete[] temp;
+		}
 	}
 
 	bool IsEmpty()
@@ -40,9 +64,14 @@ public:
 	int Size()
 	{
 		int size = 0;
+		Node *current;
 
-		// TODO: size를 하나하나 세어서 반환
-
+		current = first_;
+		while (current)
+		{
+			current = current -> next;
+			size++;
+		}
 		return size;
 	}
 
@@ -50,57 +79,96 @@ public:
 	{
 		assert(first_);
 
-		return T(); // TODO: 수정
+		return (first_);
 	}
 
 	T Back()
 	{
 		assert(first_);
+		Node *current;
 
-		return T(); // TODO: 수정
+		while (current->next)
+			current = current->next;
+		return (current);
 	}
 
 	Node* Find(T item)
 	{
-		// TODO: item이 동일한 노드 포인터 반환
+		Node *current;
 
-		return nullptr;
+		current = first_;
+		while (current->item != item)
+		{
+			current = current->next;
+			if (current == nullptr)
+				return nullptr;
+		}
+
+		return (current);
 	}
 
 	void InsertBack(Node* node, T item)
 	{
-		// TODO:
+		const Node *temp = node->next;
+		Node *new_node;
+
+		new_node = new Node;
+		new_node->item = item;
+		node->next = new_node;
+		new_node->next = temp;
 	}
 
 	void Remove(Node* n)
 	{
 		assert(first_);
+		Node *current;
 
-		// 하나 앞의 노드를 찾아야 합니다.
-		// TODO:
+		current = first_;
+		if (current == n)
+		{
+			first_ = current->next;
+			delete[] current;
+		}
+		while (current->next != n)
+		{
+			current = current->next;
+			if (!current)
+				return ;
+		}
+		delete[current];
 	}
 
 	void PushFront(T item)
 	{
-		// first_가 nullptr인 경우와 아닌 경우 나눠서 생각해보기 (결국은 두 경우를 하나로 합칠 수 있음)
+		Node *new_node;
+		Node *temp;
 
-		// 새로운 노드 만들기
-		// TODO:
-
-		// 연결 관계 정리
-		// TODO:
+		new_node = new Node;
+		new_node->item = item;
+		if (first_ == nullptr)
+			first_ = new_node;
+		else
+		{
+			temp = first_;
+			first_ = new_node;
+			new_node->next = first_;
+		}
 	}
 
 	void PushBack(T item)
 	{
+		Node *new_node;
+		Node *back_node;
+	
+		new_node = new Node;
+		new_node->item = item;	
 		if (first_)
 		{
-			// TODO:
+			back_node = Back();
+			back_node->next = new_node;
 		}
 		else
-		{
-			// TODO:
-		}
+			first_ = new_node;
 	}
 
 	void PopFront()
@@ -114,7 +182,9 @@ public:
 
 		assert(first_);
 
-		// TODO: 메모리 삭제
+		const Node *temp = first_;
+		first_ = first->next;
+		delete[] temp;
 	}
 
 	void PopBack()
@@ -126,8 +196,11 @@ public:
 			return;
 		}
 
-		// 맨 뒤에서 하나 앞의 노드를 찾아야 합니다.
+		Node *current;
 
+		current = first;
+		if (current->next )
+		while (!)
 		assert(first_);
 
 		// TODO: 메모리 삭제
