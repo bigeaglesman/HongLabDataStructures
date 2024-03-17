@@ -71,7 +71,13 @@ public:
 
 	int Sum(Node* node)
 	{
-		return 0; // TODO:
+		int sum = node->item;
+
+		if (node->left)
+			sum += Sum(node->left);
+		if (node->right)
+			sum += Sum(node->right);
+		return (sum);
 	}
 
 	int Height()
@@ -81,7 +87,14 @@ public:
 
 	int Height(Node* node)
 	{
-		return 0; // TODO:
+		int height_right = 0;
+		int height_left = 0;
+
+		if (node->right)
+			height_right = 1 + Height(node->right);
+		if (node->left)
+			height_left = 1+ Height(node->left);
+		return (height_left > height_right ? height_left : height_right);
 	}
 
 	~BinaryTree()
@@ -93,20 +106,32 @@ public:
 	{
 		if (node)
 		{
-			// TODO: 힌트 Post-order
+			DeleteTree(node->left);
+			DeleteTree(node->right);
+			delete[] node;
 		}
 	}
 
 	void Preorder() { Preorder(root_); }
 	void Preorder(Node* node)
 	{
-		// TODO:
+		if (node)
+		{
+			cout<<node->item<<" ";
+			Preorder(node->left);
+			Preorder(node->right);
+		}
 	};
 
 	void Inorder() { Inorder(root_); }
 	void Inorder(Node* node)
 	{
-		// TODO:
+		if (node)
+		{
+			Preorder(node->left);
+			cout<<node->item<<" ";
+			Preorder(node->right);
+		}
 	}
 
 	void Postorder() { Postorder(root_); }

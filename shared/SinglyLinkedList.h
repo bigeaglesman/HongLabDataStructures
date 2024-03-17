@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <cassert>
 #include <stdint.h>
@@ -79,7 +79,7 @@ public:
 	{
 		assert(first_);
 
-		return (first_);
+		return (first_->item);
 	}
 
 	T Back()
@@ -87,9 +87,10 @@ public:
 		assert(first_);
 		Node *current;
 
+		current = first_;
 		while (current->next)
 			current = current->next;
-		return (current);
+		return (current->item);
 	}
 
 	Node* Find(T item)
@@ -109,13 +110,12 @@ public:
 
 	void InsertBack(Node* node, T item)
 	{
-		const Node *temp = node->next;
 		Node *new_node;
 
 		new_node = new Node;
 		new_node->item = item;
+		new_node->next = node->next;
 		node->next = new_node;
-		new_node->next = temp;
 	}
 
 	void Remove(Node* n)
@@ -124,18 +124,19 @@ public:
 		Node *current;
 
 		current = first_;
-		if (current == n)
+		while (current->next)
 		{
-			first_ = current->next;
-			delete[] current;
-		}
-		while (current->next != n)
-		{
+			if (current->next == n)
+				break;
 			current = current->next;
-			if (!current)
-				return ;
 		}
-		delete[current];
+		if (current->next != n)
+			return ;
+		else
+		{
+			current->next = n->next;
+			delete[] n;
+		}
 	}
 
 	void PushFront(T item)
@@ -151,7 +152,7 @@ public:
 		{
 			temp = first_;
 			first_ = new_node;
-			new_node->next = first_;
+			new_node->next = temp;
 		}
 	}
 
@@ -161,10 +162,12 @@ public:
 		Node *back_node;
 	
 		new_node = new Node;
-		new_node->item = item;	
+		new_node->item = item;
 		if (first_)
 		{
-			back_node = Back();
+			back_node = first_;
+			while (back_node->next)
+				back_node = back_node->next;
 			back_node->next = new_node;
 		}
 		else
@@ -183,7 +186,7 @@ public:
 		assert(first_);
 
 		const Node *temp = first_;
-		first_ = first->next;
+		first_ = first_->next;
 		delete[] temp;
 	}
 
@@ -196,19 +199,41 @@ public:
 			return;
 		}
 
-		Node *current;
-
-		current = first;
-		if (current->next )
-		while (!)
-		assert(first_);
-
-		// TODO: 메모리 삭제
+		Node *last_node;
+		Node *second_last;
+		if (first_->next)
+		{
+			second_last = first_;
+			last_node = first_->next;
+			while (last_node->next)
+			{
+				second_last = last_node;
+				last_node = last_node->next;
+			}
+			delete[] last_node;
+			second_last->next = nullptr;
+		}
+		else
+		{
+			delete[] first_;
+			first_ = nullptr;
+		}
 	}
 
 	void Reverse()
 	{
-		// TODO: 
+		Node *temp_first;
+		Node *reverse_first;
+
+		reverse_first = nullptr;
+		while (first_)
+		{
+			temp_first = first_->next;
+			first_->next = reverse_first;
+			reverse_first = first_;
+			first_ = temp_first;
+		}
+		first_ = reverse_first;
 	}
 
 	void SetPrintDebug(bool flag)
