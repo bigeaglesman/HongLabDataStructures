@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string> // BinaryTree 출력
+#include <cmath>
 
 #include "Queue.h"
 #include "Stack.h"
@@ -61,7 +62,8 @@ public:
 	void Visit(Node* node)
 	{
 		using namespace std;
-		cout << node->item << " "; // 수행하고 싶은 작업 구현(여기서는 출력)
+		cout << node->item << " ";
+		cout << flush; // 수행하고 싶은 작업 구현(여기서는 출력)
 	}
 
 	int Sum()
@@ -117,7 +119,7 @@ public:
 	{
 		if (node)
 		{
-			cout<<node->item<<" ";
+			Visit(node);
 			Preorder(node->left);
 			Preorder(node->right);
 		}
@@ -128,26 +130,40 @@ public:
 	{
 		if (node)
 		{
-			Preorder(node->left);
-			cout<<node->item<<" ";
-			Preorder(node->right);
+			Inorder(node->left);
+			Visit(node);
+			Inorder(node->right);
 		}
 	}
 
 	void Postorder() { Postorder(root_); }
 	void Postorder(Node* node)
 	{
-		// TODO:
+		if (node)
+		{
+			Postorder(node->left);
+			Postorder(node->right);
+			Visit(node);
+		}
 	}
 
 	void LevelOrder()
 	{
-		Queue<Node*> q; // 힌트: MyQueue q;
+		Queue<Node*> q;
 		Node* current = root_;
+		if (current)
+			q.Enqueue(current);
 		while (current)
 		{
 			Visit(current);
-			// TODO:
+			q.Dequeue();
+			if (current->left)
+				q.Enqueue(current->left);
+			if (current->right)
+				q.Enqueue(current->right);
+			if (q.IsEmpty())
+				return ;
+			current = q.Front();
 		}
 	}
 
@@ -155,16 +171,23 @@ public:
 	{
 		if (!root_) return;
 
-		Stack<Node*> s; // 힌트: MyStack q;
+		Node *current;
+		Stack<Node*> s;
 		s.Push(root_);
 
 		while (!s.IsEmpty())
 		{
-			// TODO:
+			current = s.Top();
+			Visit(current);
+			s.Pop();
+			if (current->right)
+				s.Push(current->right);
+			if (current->left)
+				s.Push(current->left);
 		}
 	}
 
-	void IterInorder()
+	void IterInorder() //2중 while문 이용해서 왼쪽 노드들 먼저 스택에 쌓기
 	{
 		if (!root_) return;
 
@@ -173,25 +196,41 @@ public:
 		Node* current = root_;
 		while (current || !s.IsEmpty())
 		{
-			// TODO:
+			while (current)
+			{
+				s.Push(current);
+				current = current->left;
+			}
+			current = s.Top();
+			Visit(current);
+			s.Pop();
+			current = current->right;
 		}
 	}
 
-	void IterPostorder()
+	void IterPostorder() // 스택 두개 이용한다 
 	{
 		if (!root_) return;
 
 		Stack<Node*> s1, s2;
-		s1.Push(root_);
-
-		while (!s1.IsEmpty())
-		{
-			// TODO:
-		}
+		s2.Push(root_);
+		Node *current;
 
 		while (!s2.IsEmpty())
 		{
-			// TODO:
+			current = s2.Top();
+			s2.Pop();
+			s1.Push(current);
+			if (current->left)
+				s2.Push(current->left);
+			if (current->right)
+				s2.Push(current->right);
+		}
+
+		while (!s1.IsEmpty())
+		{
+			Visit(s1.Top());
+			s1.Pop();
 		}
 	}
 

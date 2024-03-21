@@ -92,21 +92,20 @@ int main()
 
 	int cnt_2;
 	int i;
-	int tmp;
+	char tmp;
 
 	i = 0;
 	while (i < n)
 	{
 		tmp = arr[i++];
-		cnt_2 = 0;
-		while (tmp == arr[i])
+		cnt_2 = 1;
+		while (arr[i] == tmp)
 		{
 			cnt_2++;
 			i++;
 		}
-		if (cnt_2)
-			cout << char(tmp) << cnt_2;
-		i++;
+		cout << tmp << cnt_2;
 	}
+	cout<<endl;
 	return 0;
 }

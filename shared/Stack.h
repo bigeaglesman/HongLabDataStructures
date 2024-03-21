@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <cstring>
 
 template<typename T> // 템플릿 사용
 class Stack

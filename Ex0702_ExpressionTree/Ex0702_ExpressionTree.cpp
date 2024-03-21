@@ -31,18 +31,46 @@ public:
 
 	int Evaluate(Node* node)
 	{
-		// TODO: 트리에 저장된 수식의 결과값을 계산
+		if (IsDigit(node->item))
+			return (node->item - '0');
+		else if (node->item == '+')
+			return (Evaluate(node->left)+Evaluate(node->right));
+		else if (node->item == '-')
+			return (Evaluate(node->left)-Evaluate(node->right));
+		else if (node->item == '*')
+			return (Evaluate(node->left)*Evaluate(node->right));
+		else if (node->item == '/')
+			return (Evaluate(node->left)/Evaluate(node->right));
 		return 0;
 	}
 
 	void Infix() { Infix(root_); cout << endl; }
 	void Infix(Node* node) {
-		// TODO: 수식을 Infix 형식으로 출력 (괄호 포함)
+		if (isdigit(node->item))
+			std::cout<<node->item;
+		else
+		{
+			std::cout<<'(';
+			if (node->left)
+				Infix(node->left);
+			std::cout<<node->item;
+			if (node->right)
+				Infix(node->right);
+			std::cout<<')';
+		}
 	}
 
 	void Postfix() { Postfix(root_);  cout << endl; }
 	void Postfix(Node* node) {
-		// TODO: 수식을 Postfix 형식으로 출력
+		if (IsDigit(node->item))
+			std::cout<<node->item<<" ";
+		else
+		{
+				Postfix(node->left);
+				Postfix(node->right);
+			
+			std::cout<<node->item<<" ";
+		}
 	}
 
 	// Infix -> postfix -> expression tree
@@ -62,20 +90,25 @@ public:
 		// Postfix -> Expression tree
 
 		Stack<Node*> s;
-
+		Node *temp;
+		Node *left;
+		Node *right;
 		while (!postfix.IsEmpty())
 		{
 			char c = postfix.Front();
 			postfix.Dequeue();
 
 			if (c >= '0' && c <= '9')
-			{
-				// TODO:
-			}
+				temp = new Node{c, nullptr,nullptr};
 			else
 			{
-				// TODO:
+				right = s.Top();
+				s.Pop();
+				left = s.Top();
+				s.Pop();
+				temp = new Node{c, left, right};
 			}
+				s.Push(temp);
 		}
 
 		root_ = s.Top();
