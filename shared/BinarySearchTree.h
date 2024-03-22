@@ -77,9 +77,26 @@ public:
 
 	Item* IterGet(const K& key)
 	{
-		// TODO:
+		Node *current = root_;
 
-		return nullptr; // No matching
+		while(current->item.key != key)
+		{
+			if (current->item.key > key)
+			{
+				if (current->left)
+					current = current->left;
+				else
+					return nullptr;
+			}
+			else if (current->item.key < key)
+			{
+				if (current->right)
+					current = current->right;
+				else
+					return nullptr;
+			}
+		}
+		return current->item;
 	}
 
 	void Insert(const Item& item)
@@ -91,16 +108,46 @@ public:
 
 	Node* Insert(Node* node, const Item& item)
 	{
-		// 힌트: RecurGet()
-
-		// TODO:
-
-		return node;
+		if (!node)
+			return new Node{item, nullptr, nullptr};
+		
+		if (node->item.key > item.key)
+			node->left = Insert(node->left, item);
+		else if (node->item.key < item.key)
+			node->right = Insert(node->right, item);
+		else
+			node->item = item;
+		return (node);
 	}
 
 	void IterInsert(const Item& item)
 	{
-		// TODO:
+		Node *current = root_;
+
+		while (current->item.key != item.key)
+		{
+			if (current->item.key > item.key)
+			{
+				if (!current->left)
+				{
+					current->left = new Node{item, nullptr, nullptr};
+					return ;
+				}
+				else
+					current = current->left;
+			}
+			else if (current->item.key < item.key)
+			{
+				if (!current->right)
+				{
+					current->right = new Node{item, nullptr, nullptr};
+					return ;
+				}
+				else
+					current = current->right;
+			}
+		}
+		current->item.value = item.value;
 	}
 
 	Node* MinKeyLeft(Node* node)
@@ -128,7 +175,7 @@ public:
 			node->right = Remove(node->right, key);
 		else
 		{
-			// TODO:
+			delete[] node;
 		}
 
 		return node;
