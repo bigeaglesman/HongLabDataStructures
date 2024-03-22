@@ -96,7 +96,7 @@ public:
 					return nullptr;
 			}
 		}
-		return current->item;
+		return &current->item;
 	}
 
 	void Insert(const Item& item)
@@ -109,7 +109,7 @@ public:
 	Node* Insert(Node* node, const Item& item)
 	{
 		if (!node)
-			return new Node{item, nullptr, nullptr};
+			return new Node{item, nullptr, nullptr}; // 구현 포인트 부모노드에서 널포인터 노드를 인자로 Insert함수를 사용했을 때 새로운 노드를 만들어서 그 위치에 넣는다 
 		
 		if (node->item.key > item.key)
 			node->left = Insert(node->left, item);
@@ -123,31 +123,31 @@ public:
 	void IterInsert(const Item& item)
 	{
 		Node *current = root_;
+		Node *parent_current = nullptr;
 
-		while (current->item.key != item.key)
+		while (current)
 		{
+			parent_current = current;
 			if (current->item.key > item.key)
-			{
-				if (!current->left)
-				{
-					current->left = new Node{item, nullptr, nullptr};
-					return ;
-				}
-				else
-					current = current->left;
-			}
+				current = current->left;
 			else if (current->item.key < item.key)
+				current = current->right;
+			else
 			{
-				if (!current->right)
-				{
-					current->right = new Node{item, nullptr, nullptr};
-					return ;
-				}
-				else
-					current = current->right;
+				current->item.value = item.value;
+				return ;
 			}
 		}
-		current->item.value = item.value;
+		current = new Node {item, nullptr, nullptr};
+		if (root_)
+		{
+			if (parent_current > item.key)
+				parent_current->left = current;
+			else if (parent_current < item.key)
+				parent_current->right = current;
+		}
+		else
+			root_ = current;
 	}
 
 	Node* MinKeyLeft(Node* node)
@@ -167,6 +167,7 @@ public:
 
 	Node* Remove(Node* node, const K& key)
 	{
+		Node *next_node;
 		if (!node) return node;
 
 		if (key < node->item.key)
@@ -175,7 +176,21 @@ public:
 			node->right = Remove(node->right, key);
 		else
 		{
-			delete[] node;
+			if (!node->left)
+			{
+				Node *temp = node->right;
+				delete node;
+				return temp;
+			}
+			else if (!node->right)
+			{
+				Node *temp = node->left;
+				delete node;
+				return temp;
+			}
+			Node *temp = MinKeyLeft(node->right);
+			node ->item = temp->item;
+			node->right = Remove(node->right, node->item.key);
 		}
 
 		return node;

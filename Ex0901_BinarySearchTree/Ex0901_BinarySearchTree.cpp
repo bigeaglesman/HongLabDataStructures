@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <cmath>
 
 #include "../shared/BinarySearchTree.h"
 
@@ -29,6 +30,13 @@ int main()
 	cout << bst.RecurGet(7)->value << endl;
 	cout << bst.RecurGet(1)->value << endl;
 	cout << bst.RecurGet(4)->value << endl;
+
+	cout << endl;
+	cout << bst.IterGet(5)->value << endl; // if(bst.IterGet(5)) cout << bst.IterGet(5)->value << endl;
+	cout << bst.IterGet(3)->value << endl;
+	cout << bst.IterGet(7)->value << endl;
+	cout << bst.IterGet(1)->value << endl;
+	cout << bst.IterGet(4)->value << endl;
 
 	bst.Remove(999); // 없는 키에대해 삭제
 	bst.Print2D();
