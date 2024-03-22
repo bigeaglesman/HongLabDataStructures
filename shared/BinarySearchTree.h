@@ -192,7 +192,6 @@ public:
 			node ->item = temp->item;
 			node->right = Remove(node->right, node->item.key);
 		}
-
 		return node;
 	}
 

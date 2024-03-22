@@ -11,7 +11,7 @@ int main()
 
 	BinarySearchTree<int, char> bst;
 
-	for (int i : { 5, 3, 7, 1, 4, 6, 8 })
+	for (int i : { 9, 11, 8, 7,39, 6,15, 5, 4, 3, 2, 1, 10, 41})
 		//for (int i : { 9, 8, 7, 6, 5})
 	{
 		// bst.Insert({ i, char('A' + i) }); // 참고: C++ 문법에서는 자료형의 이름 Item 생략하고 물결괄호 초기화 가능

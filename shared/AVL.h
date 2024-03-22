@@ -7,19 +7,19 @@ class AVL : public BinarySearchTree<K, V>
 {
 public:
 	using Base = BinarySearchTree<K, V>;
-	using Item = BinarySearchTree<K, V>::Item;
-	using Node = BinarySearchTree<K, V>::Node;
+	using Item = typename BinarySearchTree<K, V>::Item;
+	using Node = typename BinarySearchTree<K, V>::Node;
 
-	//struct Item {
-	//	K key = K();	// first
-	//	V value = V();	// second
-	//};
+	// struct Item {
+	// 	K key = K();	// first
+	// 	V value = V();	// second
+	// };
 
-	//struct Node {
-	//	Item item;
-	//	Node* left = nullptr;
-	//	Node* right = nullptr;
-	//};
+	// struct Node {
+	// 	Item item;
+	// 	Node* left = nullptr;
+	// 	Node* right = nullptr;
+	// };
 
 	int Height(Node* node)
 	{
@@ -36,16 +36,26 @@ public:
 
 	Node* RotateLeft(Node* parent)
 	{
-		// TODO:
+		Item temp_item = parent->item;
+		parent->item = parent->right->item;
+		parent->left = parent->right;
+		parent->right = parent->left->right;
+		parent->left->right = nullptr;
+		parent->left->item = temp_item;
 
-		return nullptr;
+		return parent;
 	}
 
 	Node* RotateRight(Node* parent)
 	{
-		// TODO:
+		Item temp_item = parent->item;
+		parent->item = parent->left->item;
+		parent->right = parent->left;
+		parent->left = parent->right->left;
+		parent->right->left = nullptr;
+		parent->right->item = temp_item;
 
-		return nullptr;
+		return parent;
 	}
 
 	void Insert(const Item& item)
@@ -72,6 +82,21 @@ public:
 
 		int balance = Balance(node);
 
+		if (balance > 1 && Balance(node->left) >= 0)
+			RotateRight(node);
+		else if (balance > 1 && Balance(node->right) <= 0)
+		{
+			RotateLeft(node->left);
+			RotateRight(node);
+		}
+		else if (balance < 1 && Balance(node->right) < 0)
+			RotateLeft(node);
+		else if (balance < 1 && Balance(node->right) > 0)
+		{
+			RotateRight(node->right);
+			RotateLeft(node);
+		}
+		
 		// balance가 0, 1, -1 이면 조절할 필요가 없다고 판단
 
 		// LL -> Right Rotation
