@@ -36,26 +36,20 @@ public:
 
 	Node* RotateLeft(Node* parent)
 	{
-		Item temp_item = parent->item;
-		parent->item = parent->right->item;
-		parent->left = parent->right;
-		parent->right = parent->left->right;
-		parent->left->right = nullptr;
-		parent->left->item = temp_item;
+		Node *child = parent->right;
+		parent->right = child->left;
+		child->left = parent;
 
-		return parent;
+		return child;
 	}
 
 	Node* RotateRight(Node* parent)
 	{
-		Item temp_item = parent->item;
-		parent->item = parent->left->item;
-		parent->right = parent->left;
-		parent->left = parent->right->left;
-		parent->right->left = nullptr;
-		parent->right->item = temp_item;
+		Node *child = parent->left;
+		parent->left = child->right;
+		child->right = parent;
 
-		return parent;
+		return child;
 	}
 
 	void Insert(const Item& item)
@@ -83,42 +77,21 @@ public:
 		int balance = Balance(node);
 
 		if (balance > 1 && Balance(node->left) >= 0)
-			RotateRight(node);
-		else if (balance > 1 && Balance(node->right) <= 0)
+			node = RotateRight(node);
+		else if (balance < -1 && Balance(node->right) <= 0)
+			node = RotateLeft(node);
+		else if (balance > 1 && Balance(node->left) < 0)
 		{
 			RotateLeft(node->left);
-			RotateRight(node);
+			node = RotateRight(node);
 		}
-		else if (balance < 1 && Balance(node->right) < 0)
-			RotateLeft(node);
-		else if (balance < 1 && Balance(node->right) > 0)
+		else if (balance < -1 && Balance(node->right) > 0)
 		{
 			RotateRight(node->right);
-			RotateLeft(node);
+			node = RotateLeft(node);
 		}
 		
 		// balance가 0, 1, -1 이면 조절할 필요가 없다고 판단
-
-		// LL -> Right Rotation
-		//if (balance > 1 && Balance(node->left) >= 0)
-		//	TODO:
-
-		// RR -> Left Rotation
-		//if (balance < -1 && Balance(node->right) <= 0)
-		//	TODO:
-
-		// LR -> Left-Right Rotation
-		//if (balance > 1 && Balance(node->left) < 0)
-		//{
-		//	TODO:
-		//}
-
-		// RL -> Right-Left Rotation
-		//if (balance < -1 && Balance(node->right) > 0)
-		//{
-		//	TODO:
-		//}
-
 		return node;
 	}
 
@@ -173,7 +146,20 @@ public:
 
 		int balance = Balance(node);
 
-		// TODO:
+		if (balance > 1 && Balance(node->left) >= 0)
+			node = RotateRight(node);
+		else if (balance < -1 && Balance(node->right) <= 0)
+			node = RotateLeft(node);
+		else if (balance > 1 && Balance(node->left) < 0)
+		{
+			RotateLeft(node->left);
+			node = RotateRight(node);
+		}
+		else if (balance < -1 && Balance(node->right) > 0)
+		{
+			RotateRight(node->right);
+			node = RotateLeft(node);
+		}
 
 		return node;
 	}

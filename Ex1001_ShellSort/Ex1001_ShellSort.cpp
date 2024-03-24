@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <iomanip>
+#include <algorithm>
 
 using namespace std;
 
@@ -53,9 +54,14 @@ void InsertionSort(int arr[], int n, int gap) // gap 추가
 	{
 		cout << "Before : ";
 		Print(arr, n, i, gap);
-
-		// TODO:
-
+		int key = arr[i];
+		int j = i -gap;
+		while (j >= 0 && arr[j] > key)
+		{
+			arr[j+gap] = arr[j];
+			j -= gap;
+		}
+		arr[j+gap] = key;
 		cout << " After : ";
 		Print(arr, n, i, gap);
 	}
