@@ -10,15 +10,16 @@ int InterpolationSearch(int arr[], int low, int high, int x)
 
 	if (low <= high && x >= arr[low] && x <= arr[high])
 	{
-		int pos = (low + high) / 2; // 이진 탐색 (중간)
+		int pos = (low + high) * (x - arr[low]) / (arr[high] - arr[low]) + low; // 이진 탐색 (중간)
 
 		// TODO: int pos = 보간 탐색으로 수정
+
 
 		if (arr[pos] == x)
 			return pos;
 
 		if (arr[pos] < x)
-			return InterpolationSearch(arr, pos + 1, high, x);
+			return InterpolationSearch(arr, pos + 1, high, x); // 재귀를 이용해서 탐색 인덱스 수정하기
 
 		if (arr[pos] > x)
 			return InterpolationSearch(arr, low, pos - 1, x);

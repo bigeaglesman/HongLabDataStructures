@@ -34,6 +34,8 @@ int main()
 {
 	int arr[] = { 170, 45, 75, 90, 802, 24, 2, 66 };
 	int n = sizeof(arr) / sizeof(arr[0]);
+	int arr_i;
+	int rem;
 
 	Print(arr, n);
 
@@ -43,8 +45,21 @@ int main()
 
 	for (int exp = 1; m / exp > 0; exp *= 10)
 	{
-		// TODO:
-
+		for (int i = 0; i < sizeof(arr)/sizeof(int); i++)
+		{
+			rem = arr[i] / exp % 10;
+			queues[rem].Enqueue(arr[i]);
+		}
+		arr_i = 0;
+		for (int j = 0; j < 10; j++)
+		{
+			while(!queues[j].IsEmpty())
+			{
+				arr[arr_i] = queues[j].Front();
+				queues[j].Dequeue();
+				arr_i++;
+			}
+		}
 		Print(arr, n);
 	}
 

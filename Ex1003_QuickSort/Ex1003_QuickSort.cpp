@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <iomanip>
 #include <math.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -28,17 +29,47 @@ void Print(int* arr, int low, int high, int n)
 // Hoare partition scheme
 int Partition(int arr[], int low, int high, int n)
 {
-	int pivot = arr[size_t(floorf((high - low) / 2.0f)) + low];
-	int i = low - 1;
-	int j = high + 1;
+	// int pivot = arr[size_t(floorf((high - low) / 2.0f)) + low];
+	// int i = low -1;
+	// int j = high + 1;
+	// int temp;
 
+	// while (true)
+	// {
+	// 	do i++;
+	// 	while(arr[i] < pivot);
+		
+	// 	do j--;
+	// 	while(arr[j] > pivot);
+	// 	if (i >= j)
+	// 		return j;
+	// 	else
+	// 		swap(arr[i], arr[j]);
+
+	// 	cout << "pivot=" << pivot << ", i=" << i << ", j=" << j << endl;
+	// 	cout << "         ";
+	// 	Print(arr, low, high, n);
+	// }
+	
+	int pivot = arr[size_t(floorf((high - low) / 2.0f)) + low];
+	int i = low;
+	int j = high;
 	while (true)
 	{
-		// TODO:
-
-		cout << "pivot=" << pivot << ", i=" << i << ", j=" << j << endl;
-		cout << "         ";
-		Print(arr, low, high, n);
+		i++;
+		while (arr[i] < pivot)
+			i++;
+		j--;
+		while (arr[j] > pivot)
+			j--;
+		if (i >= j)
+			return j;
+		else
+			swap(arr[i], arr[j]);
+		
+			cout << "pivot=" << pivot << ", i=" << i << ", j=" << j << endl;
+			cout << "         ";
+			Print(arr, low, high, n);
 	}
 }
 
@@ -46,6 +77,7 @@ void QuickSort(int arr[], int low, int high, int n) // 마지막 n은 출력용
 {
 	if (low >= 0 && high >= 0 && low < high)
 	{
+		// cout << "low : " <<low << "  high: "<< high <<endl
 		// Partitioning Index
 		int p = Partition(arr, low, high, n);
 
@@ -56,7 +88,7 @@ void QuickSort(int arr[], int low, int high, int n) // 마지막 n은 출력용
 
 int main()
 {
-	int arr[] = { 4, 17, 2, 9, 7, 5, 8, 1, 14, 6 };
+	int arr[] = { 4, 17, 2, 9, 7, 5,21 ,7 , 7, 8, 1, 14, 6 };
 	int n = sizeof(arr) / sizeof(arr[0]);
 
 	cout << "         ";
