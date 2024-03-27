@@ -49,7 +49,7 @@ public:
 		n_++;
 	}
 
-	void InsertEdge(int u, int v) // 여기서 u, v는 인덱스
+	void InsertEdge(int u, int v) // 여기서 u, v는 인덱스 u에 v가 연결되있을 경우 연결리스트 배열의 u번째 원소에 v노드를 연결한다
 	{
 		assert(u < n_ && v < n_);
 
@@ -91,17 +91,71 @@ public:
 
 	void DepthFirstTraversal(int v) // v는 인덱스
 	{
-		// TODO:
+		visited_[v] = 1;
+		cout << vertices_[v].item <<" ";
+		Node *node = list_[v];
+		while (true)
+		{
+			if (visited_[node->vertex] == 0)
+				DepthFirstTraversal(node->vertex);
+			if (node->next)
+				node = node->next;
+			else
+				break ;
+		}
 	}
 
 	void IterDFT()
 	{
-		// TODO:
+		Stack<int> s;
+		int v = 0;
+		visited_[v] = 1;
+		s.Push(v);
+		while (!s.IsEmpty())
+		{
+			v = s.Top();
+			s.Pop();
+			cout << vertices_[v].item << " stack : ";
+			Node *node = list_[v];
+			while (true)
+			{
+				if (visited_[node->vertex] == 0)
+				{
+					s.Push(node->vertex);
+					visited_[node->vertex] = 1;
+				}
+				if (node->next)
+					node = node->next;
+				else
+					break;
+			}
+			s.Print();
+		}
 	}
 
 	void BreadthFirstTraversal()
 	{
-		// TODO:
+		Queue<int> q;
+		int v = 0;
+		visited_[v] = 1;
+		q.Enqueue(v);
+		while (!q.IsEmpty())
+		{
+			v = q.Front();
+			q.Dequeue();
+			cout << vertices_[v].item << " queue : ";
+			Node *node = list_[v];
+			while (node)
+			{
+				if (visited_[node->vertex] == 0)
+				{
+					q.Enqueue(node->vertex);
+					visited_[node->vertex] = 1;
+				}
+				node = node->next;
+			}
+			q.Print();
+		}
 	}
 
 	void ResetVisited()
@@ -140,9 +194,13 @@ int main()
 
 	g.DepthFirstTraversal();
 	cout << endl;
-
+	cout << endl;
+	g.ResetVisited();
 	g.IterDFT();
 
+	cout << endl;
+	cout << endl;
+	g.ResetVisited();
 	g.BreadthFirstTraversal();
 
 	return 0;

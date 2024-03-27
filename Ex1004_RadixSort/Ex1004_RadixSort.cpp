@@ -62,6 +62,5 @@ int main()
 		}
 		Print(arr, n);
 	}
-
 	return 0;
 }
